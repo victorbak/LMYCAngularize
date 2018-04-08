@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace LmycAPI.Data.Migrations
+namespace LmycAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180408012002_First Migration")]
-    partial class FirstMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +29,8 @@ namespace LmycAPI.Data.Migrations
                     b.Property<string>("AddressCity");
 
                     b.Property<string>("AddressCountry");
+
+                    b.Property<string>("AddressPostalCode");
 
                     b.Property<string>("AddressProvince");
 
@@ -65,6 +66,8 @@ namespace LmycAPI.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("RoleModelRoleId");
+
                     b.Property<int>("SailingExperience");
 
                     b.Property<string>("SecurityStamp");
@@ -82,6 +85,8 @@ namespace LmycAPI.Data.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("RoleModelRoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -139,6 +144,20 @@ namespace LmycAPI.Data.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("LmycAPI.Models.RoleModel", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("RoleName");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("RoleModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -246,6 +265,13 @@ namespace LmycAPI.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("LmycAPI.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("LmycAPI.Models.RoleModel")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleModelRoleId");
                 });
 
             modelBuilder.Entity("LmycAPI.Models.Boat", b =>

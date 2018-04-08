@@ -13,6 +13,7 @@ namespace LmycAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AddressStreet { get; set; }
+        public string AddressPostalCode { get; set; }
         public string AddressCity { get; set; }
         public string AddressProvince { get; set; }
         public string AddressCountry { get; set; }

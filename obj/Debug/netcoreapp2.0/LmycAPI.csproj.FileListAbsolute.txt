@@ -1,0 +1,13 @@
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\app.db
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\LmycAPI.deps.json
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\LmycAPI.runtimeconfig.json
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\LmycAPI.runtimeconfig.dev.json
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\LmycAPI.dll
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\bin\Debug\netcoreapp2.0\LmycAPI.pdb
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.csproj.CoreCompileInputs.cache
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.AssemblyInfoInputs.cache
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.AssemblyInfo.cs
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.dll
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.pdb
+C:\Users\victo\Desktop\Work\ASP\LmycAPI\obj\Debug\netcoreapp2.0\LmycAPI.csprojResolveAssemblyReference.cache

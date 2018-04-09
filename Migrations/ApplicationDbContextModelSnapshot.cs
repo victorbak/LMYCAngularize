@@ -66,7 +66,7 @@ namespace LmycAPI.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("RoleModelRoleId");
+                    b.Property<string>("RoleViewModelRoleId");
 
                     b.Property<int>("SailingExperience");
 
@@ -86,7 +86,7 @@ namespace LmycAPI.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.HasIndex("RoleModelRoleId");
+                    b.HasIndex("RoleViewModelRoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -146,7 +146,7 @@ namespace LmycAPI.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("LmycAPI.Models.RoleModel", b =>
+            modelBuilder.Entity("LmycAPI.Models.RoleViewModel", b =>
                 {
                     b.Property<string>("RoleId")
                         .ValueGeneratedOnAdd();
@@ -157,7 +157,7 @@ namespace LmycAPI.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("RoleModel");
+                    b.ToTable("RoleViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -267,11 +267,146 @@ namespace LmycAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictApplication", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClientId")
+                        .IsRequired();
+
+                    b.Property<string>("ClientSecret");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("ConsentType");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("Permissions");
+
+                    b.Property<string>("PostLogoutRedirectUris");
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("RedirectUris");
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictApplications");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictAuthorization", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("Scopes");
+
+                    b.Property<string>("Status")
+                        .IsRequired();
+
+                    b.Property<string>("Subject")
+                        .IsRequired();
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("OpenIddictAuthorizations");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictScope", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("Resources");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictScopes");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("AuthorizationId");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
+                    b.Property<DateTimeOffset?>("CreationDate");
+
+                    b.Property<DateTimeOffset?>("ExpirationDate");
+
+                    b.Property<string>("Payload");
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("ReferenceId");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Subject")
+                        .IsRequired();
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("AuthorizationId");
+
+                    b.HasIndex("ReferenceId")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictTokens");
+                });
+
             modelBuilder.Entity("LmycAPI.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("LmycAPI.Models.RoleModel")
+                    b.HasOne("LmycAPI.Models.RoleViewModel")
                         .WithMany("Users")
-                        .HasForeignKey("RoleModelRoleId");
+                        .HasForeignKey("RoleViewModelRoleId");
                 });
 
             modelBuilder.Entity("LmycAPI.Models.Boat", b =>
@@ -335,6 +470,24 @@ namespace LmycAPI.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictAuthorization", b =>
+                {
+                    b.HasOne("OpenIddict.Models.OpenIddictApplication", "Application")
+                        .WithMany("Authorizations")
+                        .HasForeignKey("ApplicationId");
+                });
+
+            modelBuilder.Entity("OpenIddict.Models.OpenIddictToken", b =>
+                {
+                    b.HasOne("OpenIddict.Models.OpenIddictApplication", "Application")
+                        .WithMany("Tokens")
+                        .HasForeignKey("ApplicationId");
+
+                    b.HasOne("OpenIddict.Models.OpenIddictAuthorization", "Authorization")
+                        .WithMany("Tokens")
+                        .HasForeignKey("AuthorizationId");
                 });
 #pragma warning restore 612, 618
         }

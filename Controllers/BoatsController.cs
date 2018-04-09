@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LmycAPI.Data;
 using LmycAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using AspNet.Security.OAuth.Validation;
 
 namespace LmycAPI.Controllers
 {
@@ -49,6 +51,8 @@ namespace LmycAPI.Controllers
 
         // PUT: api/Boats/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministratorRole")]
         public async Task<IActionResult> PutBoat([FromRoute] int id, [FromBody] Boat boat)
         {
             if (!ModelState.IsValid)
@@ -84,6 +88,8 @@ namespace LmycAPI.Controllers
 
         // POST: api/Boats
         [HttpPost]
+        [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministratorRole")]
         public async Task<IActionResult> PostBoat([FromBody] Boat boat)
         {
             if (!ModelState.IsValid)
@@ -99,6 +105,8 @@ namespace LmycAPI.Controllers
 
         // DELETE: api/Boats/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministratorRole")]
         public async Task<IActionResult> DeleteBoat([FromRoute] int id)
         {
             if (!ModelState.IsValid)

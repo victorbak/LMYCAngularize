@@ -26,6 +26,6 @@ namespace LmycAPI.Data
         public DbSet<Boat> Boats { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<LmycAPI.Models.ApplicationUser> ApplicationUser { get; set; }
-        public DbSet<LmycAPI.Models.RoleModel> RoleModel { get; set; }
+        public DbSet<LmycAPI.Models.RoleViewModel> RoleViewModel { get; set; }
     }
 }

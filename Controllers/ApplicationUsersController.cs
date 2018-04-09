@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LmycAPI.Data;
 using LmycAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using AspNet.Security.OAuth.Validation;
 
 namespace LmycAPI.Controllers
 {
     [Produces("application/json")]
     [Route("api/ApplicationUsers")]
+    [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
     public class ApplicationUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +26,7 @@ namespace LmycAPI.Controllers
 
         // GET: api/ApplicationUsers
         [HttpGet]
+        [Authorize(Policy = "RequireAdministratorRole")]
         public IEnumerable<ApplicationUser> GetApplicationUser()
         {
             return _context.ApplicationUser;

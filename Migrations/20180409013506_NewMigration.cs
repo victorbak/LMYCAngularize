@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 namespace LmycAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.DropTable(
-            name: "AspNetRoleClaims");
+    name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
                 name: "AspNetUserClaims");
@@ -33,11 +32,13 @@ namespace LmycAPI.Migrations
             migrationBuilder.DropTable(
                 name: "Boats");
 
+
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "RoleModel");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -53,7 +54,45 @@ namespace LmycAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleModel",
+                name: "OpenIddictApplications",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ClientId = table.Column<string>(nullable: false),
+                    ClientSecret = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
+                    ConsentType = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: true),
+                    Permissions = table.Column<string>(nullable: true),
+                    PostLogoutRedirectUris = table.Column<string>(nullable: true),
+                    Properties = table.Column<string>(nullable: true),
+                    RedirectUris = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenIddictApplications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OpenIddictScopes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Properties = table.Column<string>(nullable: true),
+                    Resources = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenIddictScopes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleViewModel",
                 columns: table => new
                 {
                     RoleId = table.Column<string>(nullable: false),
@@ -62,7 +101,7 @@ namespace LmycAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleModel", x => x.RoleId);
+                    table.PrimaryKey("PK_RoleViewModel", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,6 +123,30 @@ namespace LmycAPI.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OpenIddictAuthorizations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ApplicationId = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
+                    Properties = table.Column<string>(nullable: true),
+                    Scopes = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: false),
+                    Subject = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenIddictAuthorizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OpenIddictAuthorizations_OpenIddictApplications_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "OpenIddictApplications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +173,7 @@ namespace LmycAPI.Migrations
                     PasswordHash = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    RoleModelRoleId = table.Column<string>(nullable: true),
+                    RoleViewModelRoleId = table.Column<string>(nullable: true),
                     SailingExperience = table.Column<int>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
@@ -120,10 +183,44 @@ namespace LmycAPI.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_RoleModel_RoleModelRoleId",
-                        column: x => x.RoleModelRoleId,
-                        principalTable: "RoleModel",
+                        name: "FK_AspNetUsers_RoleViewModel_RoleViewModelRoleId",
+                        column: x => x.RoleViewModelRoleId,
+                        principalTable: "RoleViewModel",
                         principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OpenIddictTokens",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ApplicationId = table.Column<string>(nullable: true),
+                    AuthorizationId = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
+                    CreationDate = table.Column<DateTimeOffset>(nullable: true),
+                    ExpirationDate = table.Column<DateTimeOffset>(nullable: true),
+                    Payload = table.Column<string>(nullable: true),
+                    Properties = table.Column<string>(nullable: true),
+                    ReferenceId = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    Subject = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenIddictTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OpenIddictTokens_OpenIddictApplications_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "OpenIddictApplications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OpenIddictTokens_OpenIddictAuthorizations_AuthorizationId",
+                        column: x => x.AuthorizationId,
+                        principalTable: "OpenIddictAuthorizations",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -304,14 +401,47 @@ namespace LmycAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_RoleModelRoleId",
+                name: "IX_AspNetUsers_RoleViewModelRoleId",
                 table: "AspNetUsers",
-                column: "RoleModelRoleId");
+                column: "RoleViewModelRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Boats_Id",
                 table: "Boats",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictApplications_ClientId",
+                table: "OpenIddictApplications",
+                column: "ClientId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictAuthorizations_ApplicationId",
+                table: "OpenIddictAuthorizations",
+                column: "ApplicationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictScopes_Name",
+                table: "OpenIddictScopes",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictTokens_ApplicationId",
+                table: "OpenIddictTokens",
+                column: "ApplicationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictTokens_AuthorizationId",
+                table: "OpenIddictTokens",
+                column: "AuthorizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenIddictTokens_ReferenceId",
+                table: "OpenIddictTokens",
+                column: "ReferenceId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_BoatId",
@@ -342,19 +472,31 @@ namespace LmycAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "OpenIddictScopes");
+
+            migrationBuilder.DropTable(
+                name: "OpenIddictTokens");
+
+            migrationBuilder.DropTable(
                 name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "OpenIddictAuthorizations");
+
+            migrationBuilder.DropTable(
                 name: "Boats");
+
+            migrationBuilder.DropTable(
+                name: "OpenIddictApplications");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "RoleModel");
+                name: "RoleViewModel");
         }
     }
 }
